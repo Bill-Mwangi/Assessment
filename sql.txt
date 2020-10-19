@@ -1,0 +1,43 @@
+CREATE DATABASE education;
+USE education;
+
+CREATE TABLE student (
+   studentid INT(11) NOT NULL,
+   name  VARCHAR(250),
+   course  INT(11),
+  PRIMARY KEY (studentid))
+  FOREIGN KEY (course)
+    REFERENCES education.course (courseid)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+CREATE TABLE institution (
+   institutionid INT(11) NOT NULL,
+   name VARCHAR(250),
+  PRIMARY KEY (institutionid));
+
+
+
+CREATE TABLE course (
+   courseid INT(11) NOT NULL,
+   name VARCHAR(250) NULL,
+   institution INT(11) NULL,
+  PRIMARY KEY (courseid),
+  FOREIGN KEY (institution)
+    REFERENCES education.institution (institutionid)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+
+SELECT i.iname AS "INSTITUTION NAME", c.cname AS "COURSE NAME", 
+COUNT(*) AS "NUMBER OF STUDENTS" FROM student s
+JOIN course c ON s.course = c.courseid
+JOIN institution i ON i.institutionid = c.institution
+GROUP BY course;
+
+
+
+
